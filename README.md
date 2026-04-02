@@ -6,5 +6,5 @@ algorithm で学んだことを可視化するためのサイトです。
 
 - React + TypeScript で実装
 - GitHub Pages に自動デプロイ
-- 初期アルゴリズムは Bubble Sort
+- Bubble Sort と Linear Search を可視化
 - TDD はロジック中心で進める

@@ -9,6 +9,7 @@ export function createBubbleSortSteps(input: number[]): AlgorithmStep[] {
       values: clone(values),
       activeIndices: [],
       sortedIndices: [],
+      matchedIndices: [],
       action: "compare",
       message: "初期状態です。左から順に比較を始めます。"
     }
@@ -22,6 +23,7 @@ export function createBubbleSortSteps(input: number[]): AlgorithmStep[] {
         values: clone(values),
         activeIndices: [index, index + 1],
         sortedIndices: [...sortedIndices].sort((left, right) => left - right),
+        matchedIndices: [],
         action: "compare",
         message: `${values[index]} と ${values[index + 1]} を比較します。`
       });
@@ -33,6 +35,7 @@ export function createBubbleSortSteps(input: number[]): AlgorithmStep[] {
           values: clone(values),
           activeIndices: [index, index + 1],
           sortedIndices: [...sortedIndices].sort((left, right) => left - right),
+          matchedIndices: [],
           action: "swap",
           message: "順序が逆なので入れ替えます。"
         });
@@ -45,6 +48,7 @@ export function createBubbleSortSteps(input: number[]): AlgorithmStep[] {
       values: clone(values),
       activeIndices: [],
       sortedIndices: [...sortedIndices].sort((left, right) => left - right),
+      matchedIndices: [],
       action: "settled",
       message: `${values.length - pass} 番目に大きい値が確定しました。`
     });
@@ -58,6 +62,7 @@ export function createBubbleSortSteps(input: number[]): AlgorithmStep[] {
     values: clone(values),
     activeIndices: [],
     sortedIndices: [...sortedIndices].sort((left, right) => left - right),
+    matchedIndices: [],
     action: "settled",
     message: "ソート完了です。"
   });
