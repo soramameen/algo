@@ -7,44 +7,48 @@ describe("App", () => {
     vi.useRealTimers();
   });
 
-  it("waits for manual playback before advancing steps", () => {
+  it("renders the bubble sort bars on first load", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    expect(screen.getByRole("button", { name: /Bubble Sort/ })).toHaveClass("active");
+    expect(container.querySelectorAll(".bar-card")).toHaveLength(8);
+  });
+
+  it("switches to linear search cards and shows the target", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Linear Search/ }));
+
+    expect(screen.getByText("探す値: 27")).toBeInTheDocument();
+    expect(container.querySelectorAll(".search-card")).toHaveLength(8);
+    expect(screen.getByLabelText("value 44, index 0")).toHaveClass("search-card");
+  });
+
+  it("marks the current and matched cards while linear search advances", () => {
     vi.useFakeTimers();
 
     render(<App />);
 
-    expect(screen.getByRole("button", { name: "再生" })).toBeInTheDocument();
-    expect(screen.getByText(/Step 1 \//)).toBeInTheDocument();
-
-    act(() => {
-      vi.advanceTimersByTime(2000);
-    });
-
-    expect(screen.getByText(/Step 1 \//)).toBeInTheDocument();
-
+    fireEvent.click(screen.getByRole("button", { name: /Linear Search/ }));
     fireEvent.click(screen.getByRole("button", { name: "再生" }));
 
     act(() => {
       vi.advanceTimersByTime(900);
     });
 
-    expect(screen.getByRole("button", { name: "一時停止" })).toBeInTheDocument();
-    expect(screen.getByText(/Step 2 \//)).toBeInTheDocument();
-  });
+    expect(screen.getByLabelText("value 44, index 0")).toHaveClass("active");
 
-  it("does not autoplay when switching algorithms", () => {
-    vi.useFakeTimers();
+    for (let index = 0; index < 5; index += 1) {
+      act(() => {
+        vi.advanceTimersByTime(900);
+      });
+    }
 
-    render(<App />);
-
-    fireEvent.click(screen.getByRole("button", { name: /Linear Search/ }));
-
-    expect(screen.getByRole("button", { name: "再生" })).toBeInTheDocument();
-    expect(screen.getByText(/Step 1 \//)).toBeInTheDocument();
-
-    act(() => {
-      vi.advanceTimersByTime(2000);
-    });
-
-    expect(screen.getByText(/Step 1 \//)).toBeInTheDocument();
+    expect(screen.getByText("27 が見つかりました。探索を終了します。")).toBeInTheDocument();
+    expect(screen.getByLabelText("value 27, index 4")).toHaveClass("matched");
   });
 });
