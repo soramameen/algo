@@ -21,7 +21,7 @@ function getBarStateClass(isActive: boolean, isSorted: boolean, isMatched: boole
 function App() {
   const [selectedId, setSelectedId] = useState<AlgorithmSpec["id"]>("bubble-sort");
   const [stepIndex, setStepIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [intervalMs, setIntervalMs] = useState(DEFAULT_INTERVAL_MS);
 
   const selectedAlgorithm = useMemo(
@@ -31,7 +31,7 @@ function App() {
 
   useEffect(() => {
     setStepIndex(0);
-    setIsPlaying(true);
+    setIsPlaying(false);
   }, [selectedId]);
 
   useEffect(() => {
