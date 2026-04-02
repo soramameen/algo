@@ -7,6 +7,7 @@ describe("createBubbleSortSteps", () => {
 
     expect(steps.at(-1)?.values).toEqual([1, 2, 4, 5]);
     expect(steps.at(-1)?.message).toBe("ソート完了です。");
+    expect(steps.at(-1)?.matchedIndices).toEqual([]);
   });
 
   it("records swap actions when adjacent items are out of order", () => {
