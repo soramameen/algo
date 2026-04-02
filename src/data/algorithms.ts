@@ -18,9 +18,9 @@ export const algorithms: AlgorithmSpec[] = [
   {
     id: "linear-search",
     name: "Linear Search",
-    summary: "左から順に値を確認して、目的の要素を見つける探索です。",
+    summary: "左から順にカードを確認して、目的の要素を見つける探索です。",
     description:
-      "探索中の位置を1つずつたどりながら、目的の値に到達した瞬間をハイライトします。",
+      "カードを左から1枚ずつ確認し、目的の値に到達した瞬間を強調します。",
     initialValues,
     targetValue: searchTarget,
     steps: createLinearSearchSteps(initialValues, searchTarget)

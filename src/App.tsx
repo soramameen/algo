@@ -18,6 +18,10 @@ function getBarStateClass(isActive: boolean, isSorted: boolean, isMatched: boole
     .join(" ");
 }
 
+function getSearchCardClass(isActive: boolean, isMatched: boolean) {
+  return ["search-card", isActive ? "active" : "", isMatched ? "matched" : ""].filter(Boolean).join(" ");
+}
+
 function App() {
   const [selectedId, setSelectedId] = useState<AlgorithmSpec["id"]>("bubble-sort");
   const [stepIndex, setStepIndex] = useState(0);
@@ -39,17 +43,19 @@ function App() {
       return undefined;
     }
 
-    if (stepIndex >= selectedAlgorithm.steps.length - 1) {
-      setIsPlaying(false);
-      return undefined;
-    }
-
-    const timerId = window.setTimeout(() => {
-      setStepIndex((current) => current + 1);
+    const lastStepIndex = selectedAlgorithm.steps.length - 1;
+    const timerId = window.setInterval(() => {
+      setStepIndex((current) => (current >= lastStepIndex ? current : current + 1));
     }, intervalMs);
 
-    return () => window.clearTimeout(timerId);
-  }, [intervalMs, isPlaying, selectedAlgorithm.steps.length, stepIndex]);
+    return () => window.clearInterval(timerId);
+  }, [intervalMs, isPlaying, selectedAlgorithm.steps.length]);
+
+  useEffect(() => {
+    if (stepIndex >= selectedAlgorithm.steps.length - 1 && isPlaying) {
+      setIsPlaying(false);
+    }
+  }, [isPlaying, selectedAlgorithm.steps.length, stepIndex]);
 
   const step = selectedAlgorithm.steps[stepIndex];
   const maxValue = Math.max(...step.values);
@@ -61,7 +67,7 @@ function App() {
         <p className="eyebrow">Algorithm Visualizer</p>
         <h1>アルゴリズムを動きで理解する</h1>
         <p className="lead">
-          ソートと探索を同じ土台で見比べながら、状態変化を視覚的に追えるようにします。
+          アルゴリズムごとに合う表現で、状態変化を視覚的に追えるようにします。
         </p>
 
         <nav className="algorithm-list" aria-label="アルゴリズム一覧">
@@ -118,30 +124,50 @@ function App() {
         </section>
 
         <section className="visualizer" aria-label={`${selectedAlgorithm.name} visualization`}>
-          <div
-            className="bars"
-            style={{ gridTemplateColumns: `repeat(${step.values.length}, minmax(0, 1fr))` }}
-          >
-            {step.values.map((value, index) => {
-              const isActive = step.activeIndices.includes(index);
-              const isSorted = step.sortedIndices.includes(index);
-              const isMatched = step.matchedIndices.includes(index);
-              const heightRatio = isSearchAlgorithm ? 56 : Math.max((value / maxValue) * 100, 12);
+          {isSearchAlgorithm ? (
+            <div className="search-cards">
+              {step.values.map((value, index) => {
+                const isActive = step.activeIndices.includes(index);
+                const isMatched = step.matchedIndices.includes(index);
 
-              return (
-                <article
-                  key={`${index}-${value}`}
-                  className={getBarStateClass(isActive, isSorted, isMatched)}
-                >
-                  <span className="bar-value">{value}</span>
-                  <div className="bar-track" aria-hidden="true">
-                    <div className="bar" style={{ height: `${heightRatio}%` }} />
-                  </div>
-                  <span className="bar-index">{index + 1}</span>
-                </article>
-              );
-            })}
-          </div>
+                return (
+                  <article
+                    key={`${index}-${value}`}
+                    className={getSearchCardClass(isActive, isMatched)}
+                    aria-label={`value ${value}, index ${index}`}
+                  >
+                    <span className="search-value">{value}</span>
+                    <span className="search-index">index {index}</span>
+                  </article>
+                );
+              })}
+            </div>
+          ) : (
+            <div
+              className="bars"
+              style={{ gridTemplateColumns: `repeat(${step.values.length}, minmax(0, 1fr))` }}
+            >
+              {step.values.map((value, index) => {
+                const isActive = step.activeIndices.includes(index);
+                const isSorted = step.sortedIndices.includes(index);
+                const isMatched = step.matchedIndices.includes(index);
+                const heightRatio = Math.max((value / maxValue) * 100, 12);
+
+                return (
+                  <article
+                    key={`${index}-${value}`}
+                    className={getBarStateClass(isActive, isSorted, isMatched)}
+                  >
+                    <span className="bar-value">{value}</span>
+                    <div className="bar-track" aria-hidden="true">
+                      <div className="bar" style={{ height: `${heightRatio}%` }} />
+                    </div>
+                    <span className="bar-index">index {index}</span>
+                  </article>
+                );
+              })}
+            </div>
+          )}
 
           <div className="status-panel">
             <p className="status-label">
