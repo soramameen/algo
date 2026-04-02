@@ -1,5 +1,7 @@
 export type AlgorithmId = "bubble-sort" | "linear-search";
 
+export type VisualizationKind = "bars" | "cards";
+
 export type StepAction = "compare" | "swap" | "inspect" | "found" | "settled";
 
 export type AlgorithmStep = {
@@ -16,7 +18,9 @@ export type AlgorithmSpec = {
   name: string;
   summary: string;
   description: string;
+  visualization: VisualizationKind;
   initialValues: number[];
   targetValue?: number;
+  complexity: string;
   steps: AlgorithmStep[];
 };
