@@ -361,6 +361,13 @@ h2 {
   font-size: 1.5rem;
 }
 
+.status-complexity {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
 @media (max-width: 960px) {
   .shell {
     grid-template-columns: 1fr;

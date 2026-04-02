@@ -59,7 +59,7 @@ function App() {
 
   const step = selectedAlgorithm.steps[stepIndex];
   const maxValue = Math.max(...step.values);
-  const isSearchAlgorithm = selectedAlgorithm.id === "linear-search";
+  const isCardVisualization = selectedAlgorithm.visualization === "cards";
 
   return (
     <div className="shell">
@@ -124,7 +124,7 @@ function App() {
         </section>
 
         <section className="visualizer" aria-label={`${selectedAlgorithm.name} visualization`}>
-          {isSearchAlgorithm ? (
+          {isCardVisualization ? (
             <div className="search-cards">
               {step.values.map((value, index) => {
                 const isActive = step.activeIndices.includes(index);
@@ -175,6 +175,7 @@ function App() {
             </p>
             <p className="status-tag">{actionLabels[step.action]}</p>
             <p className="status-message">{step.message}</p>
+            <p className="status-complexity">{selectedAlgorithm.complexity}</p>
           </div>
         </section>
       </main>

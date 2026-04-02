@@ -14,6 +14,7 @@ describe("App", () => {
 
     expect(screen.getByRole("button", { name: /Bubble Sort/ })).toHaveClass("active");
     expect(container.querySelectorAll(".bar-card")).toHaveLength(8);
+    expect(screen.getByText("時間計算量: O(n^2)")).toBeInTheDocument();
   });
 
   it("switches to linear search cards and shows the target", () => {
@@ -24,6 +25,7 @@ describe("App", () => {
     fireEvent.click(screen.getByRole("button", { name: /Linear Search/ }));
 
     expect(screen.getByText("探す値: 27")).toBeInTheDocument();
+    expect(screen.getByText("時間計算量: O(n)")).toBeInTheDocument();
     expect(container.querySelectorAll(".search-card")).toHaveLength(8);
     expect(screen.getByLabelText("value 44, index 0")).toHaveClass("search-card");
   });
