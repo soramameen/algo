@@ -361,6 +361,16 @@ h2 {
   font-size: 1.5rem;
 }
 
+.status-meta {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.status-meta strong {
+  color: var(--ink);
+}
+
 @media (max-width: 960px) {
   .shell {
     grid-template-columns: 1fr;
