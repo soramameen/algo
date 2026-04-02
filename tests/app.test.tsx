@@ -28,6 +28,18 @@ describe("App", () => {
     expect(screen.getByLabelText("value 44, index 0")).toHaveClass("search-card");
   });
 
+  it("switches to array cells and shows the access complexity", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Array/ }));
+
+    expect(screen.getByText("計算量 O(1)")).toBeInTheDocument();
+    expect(container.querySelectorAll(".cell-card")).toHaveLength(5);
+    expect(screen.getByLabelText("index 2, value 18")).toBeInTheDocument();
+  });
+
   it("marks the current and matched cards while linear search advances", () => {
     vi.useFakeTimers();
 
@@ -50,5 +62,27 @@ describe("App", () => {
 
     expect(screen.getByText("27 が見つかりました。探索を終了します。")).toBeInTheDocument();
     expect(screen.getByLabelText("value 27, index 4")).toHaveClass("matched");
+  });
+
+  it("animates array insert and delete operations", () => {
+    vi.useFakeTimers();
+
+    render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Array/ }));
+    fireEvent.click(screen.getByRole("button", { name: "再生" }));
+
+    act(() => {
+      vi.advanceTimersByTime(900 * 4);
+    });
+
+    expect(screen.getByLabelText("index 5, value 9")).toHaveClass("shifted");
+
+    act(() => {
+      vi.advanceTimersByTime(900 * 11);
+    });
+
+    expect(screen.getByText("計算量 O(n)")).toBeInTheDocument();
+    expect(screen.getByLabelText("index 5, empty")).toHaveClass("empty");
   });
 });

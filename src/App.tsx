@@ -9,7 +9,10 @@ const actionLabels: Record<StepAction, string> = {
   swap: "Swap",
   inspect: "Inspect",
   found: "Found",
-  settled: "Settled"
+  settled: "Settled",
+  access: "Access",
+  insert: "Insert",
+  delete: "Delete"
 };
 
 function getBarStateClass(isActive: boolean, isSorted: boolean, isMatched: boolean) {
@@ -20,6 +23,23 @@ function getBarStateClass(isActive: boolean, isSorted: boolean, isMatched: boole
 
 function getSearchCardClass(isActive: boolean, isMatched: boolean) {
   return ["search-card", isActive ? "active" : "", isMatched ? "matched" : ""].filter(Boolean).join(" ");
+}
+
+function getCellClass(
+  isActive: boolean,
+  isShifted: boolean,
+  isWritten: boolean,
+  isEmpty: boolean
+) {
+  return [
+    "cell-card",
+    isActive ? "active" : "",
+    isShifted ? "shifted" : "",
+    isWritten ? "written" : "",
+    isEmpty ? "empty" : ""
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
 
 function App() {
@@ -58,8 +78,10 @@ function App() {
   }, [isPlaying, selectedAlgorithm.steps.length, stepIndex]);
 
   const step = selectedAlgorithm.steps[stepIndex];
+  const complexity = step.complexity ?? selectedAlgorithm.complexity;
   const maxValue = Math.max(...step.values);
-  const isSearchAlgorithm = selectedAlgorithm.id === "linear-search";
+  const visualization = selectedAlgorithm.visualization;
+  const cells = step.slots ?? step.values.map((value) => value);
 
   return (
     <div className="shell">
@@ -124,7 +146,7 @@ function App() {
         </section>
 
         <section className="visualizer" aria-label={`${selectedAlgorithm.name} visualization`}>
-          {isSearchAlgorithm ? (
+          {visualization === "cards" ? (
             <div className="search-cards">
               {step.values.map((value, index) => {
                 const isActive = step.activeIndices.includes(index);
@@ -138,6 +160,29 @@ function App() {
                   >
                     <span className="search-value">{value}</span>
                     <span className="search-index">index {index}</span>
+                  </article>
+                );
+              })}
+            </div>
+          ) : visualization === "cells" ? (
+            <div
+              className="cells"
+              style={{ gridTemplateColumns: `repeat(${cells.length}, minmax(0, 1fr))` }}
+            >
+              {cells.map((cell, index) => {
+                const isActive = step.activeIndices.includes(index);
+                const isShifted = step.shiftedIndices?.includes(index) ?? false;
+                const isWritten = step.writtenIndices?.includes(index) ?? false;
+                const isEmpty = cell === null;
+
+                return (
+                  <article
+                    key={`${index}-${cell ?? "empty"}`}
+                    className={getCellClass(isActive, isShifted, isWritten, isEmpty)}
+                    aria-label={isEmpty ? `index ${index}, empty` : `index ${index}, value ${cell}`}
+                  >
+                    <span className="cell-index">index {index}</span>
+                    <span className="cell-value">{isEmpty ? "empty" : cell}</span>
                   </article>
                 );
               })}
@@ -174,6 +219,7 @@ function App() {
               Step {stepIndex + 1} / {selectedAlgorithm.steps.length}
             </p>
             <p className="status-tag">{actionLabels[step.action]}</p>
+            <p className="status-complexity">計算量 {complexity}</p>
             <p className="status-message">{step.message}</p>
           </div>
         </section>

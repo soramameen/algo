@@ -213,6 +213,13 @@ h2 {
   min-height: 320px;
 }
 
+.cells {
+  display: grid;
+  gap: 14px;
+  min-height: 180px;
+  align-items: stretch;
+}
+
 .bar-card {
   display: flex;
   flex-direction: column;
@@ -268,6 +275,75 @@ h2 {
     linear-gradient(180deg, rgba(191, 241, 191, 0.96) 0%, rgba(232, 250, 233, 0.9) 100%),
     linear-gradient(135deg, rgba(20, 138, 75, 0.08) 0%, rgba(255, 255, 255, 0) 100%);
   box-shadow: 0 22px 42px rgba(20, 138, 75, 0.18);
+}
+
+.cell-card {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 10px;
+  min-height: 150px;
+  padding: 18px 14px;
+  border: 1px solid rgba(20, 50, 63, 0.12);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0%, rgba(233, 223, 200, 0.34) 100%),
+    linear-gradient(135deg, rgba(24, 121, 114, 0.12) 0%, rgba(255, 255, 255, 0) 100%);
+  box-shadow: 0 18px 34px rgba(20, 50, 63, 0.08);
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background 220ms ease;
+}
+
+.cell-index {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cell-value {
+  font-size: clamp(1.8rem, 2.4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.cell-card.active {
+  border-color: rgba(24, 121, 114, 0.52);
+  box-shadow: 0 22px 42px rgba(24, 121, 114, 0.18);
+  transform: translateY(-6px);
+}
+
+.cell-card.shifted {
+  border-color: rgba(217, 108, 35, 0.44);
+  background:
+    linear-gradient(180deg, rgba(255, 243, 223, 0.98) 0%, rgba(255, 255, 255, 0.9) 100%),
+    linear-gradient(135deg, rgba(217, 108, 35, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.cell-card.written {
+  border-color: rgba(20, 138, 75, 0.44);
+  background:
+    linear-gradient(180deg, rgba(225, 245, 226, 0.98) 0%, rgba(255, 255, 255, 0.92) 100%),
+    linear-gradient(135deg, rgba(20, 138, 75, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+  box-shadow: 0 22px 42px rgba(20, 138, 75, 0.14);
+}
+
+.cell-card.empty {
+  border-style: dashed;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.56);
+  box-shadow: none;
+}
+
+.cell-card.empty .cell-value {
+  color: var(--muted);
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .bar-value {
@@ -356,6 +432,19 @@ h2 {
   text-transform: uppercase;
 }
 
+.status-complexity {
+  display: inline-flex;
+  margin: 0 0 12px;
+  border-radius: 999px;
+  background: rgba(217, 108, 35, 0.12);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 6px 10px;
+  text-transform: uppercase;
+}
+
 .status-message {
   margin: 0;
   font-size: 1.5rem;
@@ -402,6 +491,10 @@ h2 {
     grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
   }
 
+  .cells {
+    gap: 10px;
+  }
+
   .bar-track {
     height: 220px;
     padding: 8px;
@@ -414,6 +507,11 @@ h2 {
 
   .bar-value {
     font-size: 0.9rem;
+  }
+
+  .cell-card {
+    min-height: 120px;
+    padding: 14px 10px;
   }
 
   .status-message {
