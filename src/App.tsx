@@ -1,8 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
 import { algorithms } from "./data/algorithms";
-import type { AlgorithmSpec } from "./types";
+import type { AlgorithmSpec, StepAction } from "./types";
 
 const DEFAULT_INTERVAL_MS = 900;
+
+const actionLabels: Record<StepAction, string> = {
+  compare: "Compare",
+  swap: "Swap",
+  inspect: "Inspect",
+  found: "Found",
+  settled: "Settled"
+};
+
+function getBarStateClass(isActive: boolean, isSorted: boolean, isMatched: boolean) {
+  return ["bar-card", isActive ? "active" : "", isSorted ? "sorted" : "", isMatched ? "matched" : ""]
+    .filter(Boolean)
+    .join(" ");
+}
 
 function App() {
   const [selectedId, setSelectedId] = useState<AlgorithmSpec["id"]>("bubble-sort");
@@ -39,6 +53,7 @@ function App() {
 
   const step = selectedAlgorithm.steps[stepIndex];
   const maxValue = Math.max(...step.values);
+  const isSearchAlgorithm = selectedAlgorithm.id === "linear-search";
 
   return (
     <div className="shell">
@@ -46,7 +61,7 @@ function App() {
         <p className="eyebrow">Algorithm Visualizer</p>
         <h1>アルゴリズムを動きで理解する</h1>
         <p className="lead">
-          最初は Bubble Sort だけに集中します。将来はこの一覧を増やしていく想定です。
+          ソートと探索を同じ土台で見比べながら、状態変化を視覚的に追えるようにします。
         </p>
 
         <nav className="algorithm-list" aria-label="アルゴリズム一覧">
@@ -70,6 +85,9 @@ function App() {
             <p className="eyebrow">Now Visualizing</p>
             <h2>{selectedAlgorithm.name}</h2>
             <p>{selectedAlgorithm.description}</p>
+            {selectedAlgorithm.targetValue !== undefined ? (
+              <p className="target-chip">探す値: {selectedAlgorithm.targetValue}</p>
+            ) : null}
           </div>
 
           <div className="controls">
@@ -99,29 +117,25 @@ function App() {
           </div>
         </section>
 
-        <section className="visualizer" aria-label="Bubble Sort visualization">
-          <div className="bars">
+        <section className="visualizer" aria-label={`${selectedAlgorithm.name} visualization`}>
+          <div
+            className="bars"
+            style={{ gridTemplateColumns: `repeat(${step.values.length}, minmax(0, 1fr))` }}
+          >
             {step.values.map((value, index) => {
               const isActive = step.activeIndices.includes(index);
               const isSorted = step.sortedIndices.includes(index);
+              const isMatched = step.matchedIndices.includes(index);
+              const heightRatio = isSearchAlgorithm ? 56 : Math.max((value / maxValue) * 100, 12);
 
               return (
                 <article
                   key={`${index}-${value}`}
-                  className={[
-                    "bar-card",
-                    isActive ? "active" : "",
-                    isSorted ? "sorted" : ""
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
+                  className={getBarStateClass(isActive, isSorted, isMatched)}
                 >
                   <span className="bar-value">{value}</span>
                   <div className="bar-track" aria-hidden="true">
-                    <div
-                      className="bar"
-                      style={{ height: `${Math.max((value / maxValue) * 100, 12)}%` }}
-                    />
+                    <div className="bar" style={{ height: `${heightRatio}%` }} />
                   </div>
                   <span className="bar-index">{index + 1}</span>
                 </article>
@@ -133,6 +147,7 @@ function App() {
             <p className="status-label">
               Step {stepIndex + 1} / {selectedAlgorithm.steps.length}
             </p>
+            <p className="status-tag">{actionLabels[step.action]}</p>
             <p className="status-message">{step.message}</p>
           </div>
         </section>
