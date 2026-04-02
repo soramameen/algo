@@ -22,6 +22,61 @@ function getSearchCardClass(isActive: boolean, isMatched: boolean) {
   return ["search-card", isActive ? "active" : "", isMatched ? "matched" : ""].filter(Boolean).join(" ");
 }
 
+function renderVisualization(selectedAlgorithm: AlgorithmSpec, stepIndex: number) {
+  const step = selectedAlgorithm.steps[stepIndex];
+
+  if (selectedAlgorithm.visualization === "cards") {
+    return (
+      <div className="search-cards">
+        {step.values.map((value, index) => {
+          const isActive = step.activeIndices.includes(index);
+          const isMatched = step.matchedIndices.includes(index);
+
+          return (
+            <article
+              key={`${index}-${value}`}
+              className={getSearchCardClass(isActive, isMatched)}
+              aria-label={`value ${value}, index ${index}`}
+            >
+              <span className="search-value">{value}</span>
+              <span className="search-index">index {index}</span>
+            </article>
+          );
+        })}
+      </div>
+    );
+  }
+
+  const maxValue = Math.max(...step.values);
+
+  return (
+    <div
+      className="bars"
+      style={{ gridTemplateColumns: `repeat(${step.values.length}, minmax(0, 1fr))` }}
+    >
+      {step.values.map((value, index) => {
+        const isActive = step.activeIndices.includes(index);
+        const isSorted = step.sortedIndices.includes(index);
+        const isMatched = step.matchedIndices.includes(index);
+        const heightRatio = Math.max((value / maxValue) * 100, 12);
+
+        return (
+          <article
+            key={`${index}-${value}`}
+            className={getBarStateClass(isActive, isSorted, isMatched)}
+          >
+            <span className="bar-value">{value}</span>
+            <div className="bar-track" aria-hidden="true">
+              <div className="bar" style={{ height: `${heightRatio}%` }} />
+            </div>
+            <span className="bar-index">index {index}</span>
+          </article>
+        );
+      })}
+    </div>
+  );
+}
+
 function App() {
   const [selectedId, setSelectedId] = useState<AlgorithmSpec["id"]>("bubble-sort");
   const [stepIndex, setStepIndex] = useState(0);
@@ -58,8 +113,6 @@ function App() {
   }, [isPlaying, selectedAlgorithm.steps.length, stepIndex]);
 
   const step = selectedAlgorithm.steps[stepIndex];
-  const maxValue = Math.max(...step.values);
-  const isSearchAlgorithm = selectedAlgorithm.id === "linear-search";
 
   return (
     <div className="shell">
@@ -124,50 +177,7 @@ function App() {
         </section>
 
         <section className="visualizer" aria-label={`${selectedAlgorithm.name} visualization`}>
-          {isSearchAlgorithm ? (
-            <div className="search-cards">
-              {step.values.map((value, index) => {
-                const isActive = step.activeIndices.includes(index);
-                const isMatched = step.matchedIndices.includes(index);
-
-                return (
-                  <article
-                    key={`${index}-${value}`}
-                    className={getSearchCardClass(isActive, isMatched)}
-                    aria-label={`value ${value}, index ${index}`}
-                  >
-                    <span className="search-value">{value}</span>
-                    <span className="search-index">index {index}</span>
-                  </article>
-                );
-              })}
-            </div>
-          ) : (
-            <div
-              className="bars"
-              style={{ gridTemplateColumns: `repeat(${step.values.length}, minmax(0, 1fr))` }}
-            >
-              {step.values.map((value, index) => {
-                const isActive = step.activeIndices.includes(index);
-                const isSorted = step.sortedIndices.includes(index);
-                const isMatched = step.matchedIndices.includes(index);
-                const heightRatio = Math.max((value / maxValue) * 100, 12);
-
-                return (
-                  <article
-                    key={`${index}-${value}`}
-                    className={getBarStateClass(isActive, isSorted, isMatched)}
-                  >
-                    <span className="bar-value">{value}</span>
-                    <div className="bar-track" aria-hidden="true">
-                      <div className="bar" style={{ height: `${heightRatio}%` }} />
-                    </div>
-                    <span className="bar-index">index {index}</span>
-                  </article>
-                );
-              })}
-            </div>
-          )}
+          {renderVisualization(selectedAlgorithm, stepIndex)}
 
           <div className="status-panel">
             <p className="status-label">
@@ -175,6 +185,9 @@ function App() {
             </p>
             <p className="status-tag">{actionLabels[step.action]}</p>
             <p className="status-message">{step.message}</p>
+            <p className="status-meta">
+              時間計算量 <strong>{selectedAlgorithm.timeComplexity}</strong>
+            </p>
           </div>
         </section>
       </main>
