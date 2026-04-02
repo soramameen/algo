@@ -167,7 +167,7 @@ function App() {
           ) : visualization === "cells" ? (
             <div
               className="cells"
-              style={{ gridTemplateColumns: `repeat(${cells.length}, minmax(0, 1fr))` }}
+              style={{ gridTemplateColumns: `repeat(${cells.length}, minmax(96px, 1fr))` }}
             >
               {cells.map((cell, index) => {
                 const isActive = step.activeIndices.includes(index);
