@@ -35,8 +35,10 @@ describe("App", () => {
   it("shows a legend and explicit labels for value and index", () => {
     render(<App />);
 
-    expect(screen.getByLabelText("凡例")).toHaveTextContent("上 = 値");
-    expect(screen.getByLabelText("凡例")).toHaveTextContent("下 = index");
-    expect(screen.getAllByLabelText(/値 \d+, index \d+/)).toHaveLength(8);
+    expect(screen.getByText("bar height = value")).toBeInTheDocument();
+    expect(screen.getAllByLabelText(/value \d+, index \d+/)).toHaveLength(8);
+    expect(screen.getByText("index 0")).toBeInTheDocument();
+    expect(screen.getByText("index 7")).toBeInTheDocument();
+    expect(screen.queryByText("index 8")).not.toBeInTheDocument();
   });
 });

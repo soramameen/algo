@@ -118,14 +118,7 @@ function App() {
         </section>
 
         <section className="visualizer" aria-label={`${selectedAlgorithm.name} visualization`}>
-          <div className="bar-legend" aria-label="凡例">
-            <span>
-              <strong>上</strong> = 値
-            </span>
-            <span>
-              <strong>下</strong> = index
-            </span>
-          </div>
+          <p className="bars-legend">bar height = value</p>
           <div
             className="bars"
             style={{ gridTemplateColumns: `repeat(${step.values.length}, minmax(0, 1fr))` }}
@@ -140,15 +133,13 @@ function App() {
                 <article
                   key={`${index}-${value}`}
                   className={getBarStateClass(isActive, isSorted, isMatched)}
-                  aria-label={`値 ${value}, index ${index + 1}`}
+                  aria-label={`value ${value}, index ${index}`}
                 >
-                  <span className="bar-caption">値</span>
-                  <span className="bar-value">{value}</span>
                   <div className="bar-track" aria-hidden="true">
+                    <span className="bar-value">{value}</span>
                     <div className="bar" style={{ height: `${heightRatio}%` }} />
                   </div>
-                  <span className="bar-caption">index</span>
-                  <span className="bar-index">{index + 1}</span>
+                  <span className="bar-index">index {index}</span>
                 </article>
               );
             })}
