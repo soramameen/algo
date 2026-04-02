@@ -116,12 +116,14 @@ function App() {
                     .filter(Boolean)
                     .join(" ")}
                 >
-                  <div
-                    className="bar"
-                    style={{ height: `${(value / maxValue) * 100}%` }}
-                    aria-hidden="true"
-                  />
-                  <span>{value}</span>
+                  <span className="bar-value">{value}</span>
+                  <div className="bar-track" aria-hidden="true">
+                    <div
+                      className="bar"
+                      style={{ height: `${Math.max((value / maxValue) * 100, 12)}%` }}
+                    />
+                  </div>
+                  <span className="bar-index">{index + 1}</span>
                 </article>
               );
             })}
