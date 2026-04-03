@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { algorithms } from "./data/algorithms";
 import type { AlgorithmSpec, StepAction } from "./types";
 
-const DEFAULT_INTERVAL_MS = 900;
+const DEFAULT_INTERVAL_MS = 1200;
 
 const actionLabels: Record<StepAction, string> = {
   compare: "Compare",
@@ -137,9 +137,9 @@ function App() {
                 value={intervalMs}
                 onChange={(event) => setIntervalMs(Number(event.target.value))}
               >
-                <option value={1200}>ゆっくり</option>
-                <option value={900}>標準</option>
-                <option value={500}>速い</option>
+                <option value={1500}>ゆっくり</option>
+                <option value={1200}>標準</option>
+                <option value={900}>速い</option>
               </select>
             </label>
           </div>
