@@ -37,6 +37,9 @@ describe("App", () => {
 
     expect(screen.getByText("計算量 O(1)")).toBeInTheDocument();
     expect(container.querySelectorAll(".cell-card")).toHaveLength(5);
+    expect(container.querySelector(".cells")).toHaveStyle({
+      gridTemplateColumns: "repeat(5, minmax(96px, 1fr))"
+    });
     expect(screen.getByLabelText("index 2, value 18")).toBeInTheDocument();
   });
 

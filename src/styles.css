@@ -218,6 +218,11 @@ h2 {
   gap: 14px;
   min-height: 180px;
   align-items: stretch;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .bar-card {
