@@ -14,6 +14,9 @@ describe("App", () => {
 
     expect(screen.getByRole("button", { name: /Bubble Sort/ })).toHaveClass("active");
     expect(container.querySelectorAll(".bar-card")).toHaveLength(8);
+    expect(screen.getByText("index 0")).toBeInTheDocument();
+    expect(screen.getByText("index 7")).toBeInTheDocument();
+    expect(screen.queryByText("index 8")).not.toBeInTheDocument();
   });
 
   it("switches to linear search cards and shows the target", () => {
