@@ -150,6 +150,13 @@ function App() {
     }
   }, [isPlaying, stepIndex, steps.length]);
 
+  const lastStepIndex = steps.length - 1;
+
+  const moveToStep = (nextStepIndex: number) => {
+    setIsPlaying(false);
+    setStepIndex(nextStepIndex);
+  };
+
   const step = steps[stepIndex];
   const complexity = step.complexity ?? selectedAlgorithm.complexity;
   const maxValue = Math.max(...step.values, 1);
@@ -223,6 +230,20 @@ function App() {
             </button>
             <button
               type="button"
+              disabled={stepIndex === 0}
+              onClick={() => moveToStep(Math.max(stepIndex - 1, 0))}
+            >
+              前へ
+            </button>
+            <button
+              type="button"
+              disabled={stepIndex === lastStepIndex}
+              onClick={() => moveToStep(Math.min(stepIndex + 1, lastStepIndex))}
+            >
+              次へ
+            </button>
+            <button
+              type="button"
               onClick={() => {
                 setStepIndex(0);
                 setIsPlaying(false);
@@ -240,6 +261,16 @@ function App() {
                 <option value={900}>標準</option>
                 <option value={500}>速い</option>
               </select>
+            </label>
+            <label className="seek-control">
+              シーク
+              <input
+                type="range"
+                min={0}
+                max={lastStepIndex}
+                value={stepIndex}
+                onChange={(event) => moveToStep(Number(event.target.value))}
+              />
             </label>
           </div>
         </section>
