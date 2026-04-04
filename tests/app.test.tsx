@@ -88,4 +88,65 @@ describe("App", () => {
     expect(screen.getByText("計算量 O(n)")).toBeInTheDocument();
     expect(screen.getByLabelText("index 5, empty")).toHaveClass("empty");
   });
+
+  it("disables previous and next buttons at the start and end of the steps", () => {
+    vi.useFakeTimers();
+
+    render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Linear Search/ }));
+
+    const previousButton = screen.getByRole("button", { name: "前へ" });
+    const nextButton = screen.getByRole("button", { name: "次へ" });
+    const seek = screen.getByLabelText("シーク");
+
+    expect(previousButton).toBeDisabled();
+    expect(nextButton).not.toBeDisabled();
+
+    fireEvent.change(seek, { target: { value: "6" } });
+
+    expect(screen.getByText("Step 7 / 7")).toBeInTheDocument();
+    expect(previousButton).not.toBeDisabled();
+    expect(nextButton).toBeDisabled();
+  });
+
+  it("stops autoplay on manual step controls and resumes from the current position", () => {
+    vi.useFakeTimers();
+
+    render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Linear Search/ }));
+    fireEvent.click(screen.getByRole("button", { name: "再生" }));
+
+    act(() => {
+      vi.advanceTimersByTime(900);
+    });
+
+    expect(screen.getByText("Step 2 / 7")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "次へ" }));
+
+    expect(screen.getByText("Step 3 / 7")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "再生" })).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(1800);
+    });
+
+    expect(screen.getByText("Step 3 / 7")).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("シーク"), { target: { value: "5" } });
+
+    expect(screen.getByText("Step 6 / 7")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "再生" })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "再生" }));
+
+    act(() => {
+      vi.advanceTimersByTime(900);
+    });
+
+    expect(screen.getByText("Step 7 / 7")).toBeInTheDocument();
+    expect(screen.getByText("27 が見つかりました。探索を終了します。")).toBeInTheDocument();
+  });
 });
