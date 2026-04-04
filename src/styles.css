@@ -32,7 +32,8 @@ body {
 }
 
 button,
-select {
+select,
+input {
   font: inherit;
 }
 
@@ -196,6 +197,96 @@ h2 {
 .visualizer {
   display: grid;
   gap: 24px;
+}
+
+.editor-panel {
+  display: grid;
+  gap: 20px;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  padding: 28px;
+}
+
+.input-editor {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.input-editor legend {
+  padding: 0;
+  font-weight: 700;
+}
+
+.input-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.input-field,
+.target-editor {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.input-field input,
+.target-editor input {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid rgba(20, 50, 63, 0.18);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--ink);
+  padding: 0 14px;
+}
+
+.editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.input-row-button {
+  border: 1px solid rgba(20, 50, 63, 0.12);
+  border-radius: 999px;
+  background: rgba(23, 60, 72, 0.08);
+  color: var(--ink);
+  min-height: 44px;
+  padding: 0 18px;
+}
+
+.input-row-button.primary {
+  border-color: transparent;
+  background: #173c48;
+  color: #f8f5ef;
+}
+
+.input-row-button.secondary {
+  background: rgba(217, 108, 35, 0.1);
+  color: var(--accent);
+}
+
+.input-row-button:disabled {
+  opacity: 0.5;
+}
+
+.editor-error {
+  margin: 0;
+  color: #b53030;
+  font-weight: 700;
 }
 
 .bars {

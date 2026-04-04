@@ -16,7 +16,8 @@ export const algorithms: AlgorithmSpec[] = [
       "各パスで最大値が末尾へ移動していく様子を、棒グラフとステータスメッセージで追跡します。",
     initialValues,
     complexity: "O(n^2)",
-    steps: createBubbleSortSteps(initialValues)
+    isEditable: true,
+    createSteps: (values) => createBubbleSortSteps(values)
   },
   {
     id: "linear-search",
@@ -28,7 +29,8 @@ export const algorithms: AlgorithmSpec[] = [
     initialValues,
     targetValue: searchTarget,
     complexity: "O(n)",
-    steps: createLinearSearchSteps(initialValues, searchTarget)
+    isEditable: true,
+    createSteps: (values, targetValue = searchTarget) => createLinearSearchSteps(values, targetValue)
   },
   {
     id: "array",
@@ -39,6 +41,7 @@ export const algorithms: AlgorithmSpec[] = [
       "index を直接たどる access と、末尾から詰める insert / delete の動きをセル単位で追います。",
     initialValues: [12, 27, 18, 44, 9],
     complexity: "O(1) / O(n)",
-    steps: createArraySteps([12, 27, 18, 44, 9])
+    isEditable: false,
+    createSteps: (values) => createArraySteps(values)
   }
 ];

@@ -25,6 +25,8 @@ export type AlgorithmStep = {
   complexity?: string;
 };
 
+export type CreateSteps = (values: number[], targetValue?: number) => AlgorithmStep[];
+
 export type AlgorithmSpec = {
   id: AlgorithmId;
   visualization: VisualizationType;
@@ -34,5 +36,6 @@ export type AlgorithmSpec = {
   initialValues: number[];
   targetValue?: number;
   complexity: string;
-  steps: AlgorithmStep[];
+  isEditable: boolean;
+  createSteps: CreateSteps;
 };
