@@ -4,6 +4,11 @@ import type { AlgorithmSpec, StepAction } from "./types";
 
 const DEFAULT_INTERVAL_MS = 900;
 
+type AppliedInputs = {
+  values: number[];
+  targetValue?: number;
+};
+
 const actionLabels: Record<StepAction, string> = {
   compare: "Compare",
   swap: "Swap",
@@ -42,6 +47,58 @@ function getCellClass(
     .join(" ");
 }
 
+function createDraftValues(values: number[]) {
+  return values.map((value) => String(value));
+}
+
+function getDefaultInputs(algorithm: AlgorithmSpec): AppliedInputs {
+  return {
+    values: [...algorithm.initialValues],
+    targetValue: algorithm.targetValue
+  };
+}
+
+function parsePositiveInteger(value: string) {
+  const trimmed = value.trim();
+
+  if (!/^\d+$/.test(trimmed)) {
+    return null;
+  }
+
+  const parsed = Number(trimmed);
+
+  return parsed > 0 ? parsed : null;
+}
+
+function validateInputs(
+  algorithm: AlgorithmSpec,
+  draftValues: string[],
+  draftTargetValue: string
+): { values: number[]; targetValue?: number } | { error: string } {
+  const values = draftValues
+    .map((value) => parsePositiveInteger(value))
+    .filter((value): value is number => value !== null);
+
+  if (draftValues.length === 0 || values.length !== draftValues.length) {
+    return { error: "入力配列は1つ以上の正の整数を入力してください" };
+  }
+
+  if (algorithm.targetValue === undefined) {
+    return { values };
+  }
+
+  const targetValue = parsePositiveInteger(draftTargetValue);
+
+  if (targetValue === null) {
+    return { error: "探索値は正の整数を入力してください" };
+  }
+
+  return {
+    values,
+    targetValue
+  };
+}
+
 function App() {
   const [selectedId, setSelectedId] = useState<AlgorithmSpec["id"]>("bubble-sort");
   const [stepIndex, setStepIndex] = useState(0);
@@ -53,35 +110,77 @@ function App() {
     [selectedId]
   );
 
+  const [draftValues, setDraftValues] = useState(() => createDraftValues(selectedAlgorithm.initialValues));
+  const [draftTargetValue, setDraftTargetValue] = useState(() => String(selectedAlgorithm.targetValue ?? ""));
+  const [appliedInputs, setAppliedInputs] = useState<AppliedInputs>(() => getDefaultInputs(selectedAlgorithm));
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const steps = useMemo(
+    () => selectedAlgorithm.createSteps(appliedInputs.values, appliedInputs.targetValue),
+    [appliedInputs.targetValue, appliedInputs.values, selectedAlgorithm]
+  );
+
   useEffect(() => {
+    const defaults = getDefaultInputs(selectedAlgorithm);
+
+    setDraftValues(createDraftValues(defaults.values));
+    setDraftTargetValue(String(defaults.targetValue ?? ""));
+    setAppliedInputs(defaults);
+    setErrorMessage(null);
     setStepIndex(0);
     setIsPlaying(false);
-  }, [selectedId]);
+  }, [selectedAlgorithm]);
 
   useEffect(() => {
     if (!isPlaying) {
       return undefined;
     }
 
-    const lastStepIndex = selectedAlgorithm.steps.length - 1;
+    const lastStepIndex = steps.length - 1;
     const timerId = window.setInterval(() => {
       setStepIndex((current) => (current >= lastStepIndex ? current : current + 1));
     }, intervalMs);
 
     return () => window.clearInterval(timerId);
-  }, [intervalMs, isPlaying, selectedAlgorithm.steps.length]);
+  }, [intervalMs, isPlaying, steps.length]);
 
   useEffect(() => {
-    if (stepIndex >= selectedAlgorithm.steps.length - 1 && isPlaying) {
+    if (stepIndex >= steps.length - 1 && isPlaying) {
       setIsPlaying(false);
     }
-  }, [isPlaying, selectedAlgorithm.steps.length, stepIndex]);
+  }, [isPlaying, stepIndex, steps.length]);
 
-  const step = selectedAlgorithm.steps[stepIndex];
+  const step = steps[stepIndex];
   const complexity = step.complexity ?? selectedAlgorithm.complexity;
-  const maxValue = Math.max(...step.values);
+  const maxValue = Math.max(...step.values, 1);
   const visualization = selectedAlgorithm.visualization;
   const cells = step.slots ?? step.values.map((value) => value);
+  const displayTargetValue = selectedAlgorithm.targetValue !== undefined ? appliedInputs.targetValue : undefined;
+
+  const handleApply = () => {
+    const result = validateInputs(selectedAlgorithm, draftValues, draftTargetValue);
+
+    if ("error" in result) {
+      setErrorMessage(result.error);
+      return;
+    }
+
+    setAppliedInputs(result);
+    setErrorMessage(null);
+    setStepIndex(0);
+    setIsPlaying(false);
+  };
+
+  const handleReset = () => {
+    const defaults = getDefaultInputs(selectedAlgorithm);
+
+    setDraftValues(createDraftValues(defaults.values));
+    setDraftTargetValue(String(defaults.targetValue ?? ""));
+    setAppliedInputs(defaults);
+    setErrorMessage(null);
+    setStepIndex(0);
+    setIsPlaying(false);
+  };
 
   return (
     <div className="shell">
@@ -113,8 +212,8 @@ function App() {
             <p className="eyebrow">Now Visualizing</p>
             <h2>{selectedAlgorithm.name}</h2>
             <p>{selectedAlgorithm.description}</p>
-            {selectedAlgorithm.targetValue !== undefined ? (
-              <p className="target-chip">探す値: {selectedAlgorithm.targetValue}</p>
+            {displayTargetValue !== undefined ? (
+              <p className="target-chip">探す値: {displayTargetValue}</p>
             ) : null}
           </div>
 
@@ -144,6 +243,84 @@ function App() {
             </label>
           </div>
         </section>
+
+        {selectedAlgorithm.isEditable ? (
+          <section className="editor-panel" aria-label={`${selectedAlgorithm.name} editor`}>
+            <fieldset className="input-editor">
+              <legend>入力配列</legend>
+              <div className="input-grid">
+                {draftValues.map((value, index) => (
+                  <div key={`${selectedAlgorithm.id}-${index}`} className="input-row">
+                    <label className="input-field">
+                      <span>入力値 {index + 1}</span>
+                      <input
+                        type="number"
+                        inputMode="numeric"
+                        aria-label={`入力値 ${index + 1}`}
+                        value={value}
+                        onChange={(event) => {
+                          setDraftValues((current) =>
+                            current.map((item, itemIndex) =>
+                              itemIndex === index ? event.target.value : item
+                            )
+                          );
+                          setErrorMessage(null);
+                        }}
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      className="input-row-button"
+                      onClick={() => {
+                        setDraftValues((current) => current.filter((_, itemIndex) => itemIndex !== index));
+                        setErrorMessage(null);
+                      }}
+                      disabled={draftValues.length === 1}
+                    >
+                      削除
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </fieldset>
+
+            {selectedAlgorithm.targetValue !== undefined ? (
+              <label className="target-editor">
+                <span>探索値</span>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  value={draftTargetValue}
+                  onChange={(event) => {
+                    setDraftTargetValue(event.target.value);
+                    setErrorMessage(null);
+                  }}
+                />
+              </label>
+            ) : null}
+
+            <div className="editor-actions">
+              <button
+                type="button"
+                className="input-row-button"
+                onClick={() => {
+                  setDraftValues((current) => [...current, String(current.length + 1)]);
+                  setErrorMessage(null);
+                }}
+              >
+                要素を追加
+              </button>
+              <button type="button" className="input-row-button primary" onClick={handleApply}>
+                Apply
+              </button>
+              <button type="button" className="input-row-button secondary" onClick={handleReset}>
+                サンプルに戻す
+              </button>
+            </div>
+
+            {errorMessage ? <p className="editor-error">{errorMessage}</p> : null}
+          </section>
+        ) : null}
 
         <section className="visualizer" aria-label={`${selectedAlgorithm.name} visualization`}>
           {visualization === "cards" ? (
@@ -216,7 +393,7 @@ function App() {
 
           <div className="status-panel">
             <p className="status-label">
-              Step {stepIndex + 1} / {selectedAlgorithm.steps.length}
+              Step {stepIndex + 1} / {steps.length}
             </p>
             <p className="status-tag">{actionLabels[step.action]}</p>
             <p className="status-complexity">計算量 {complexity}</p>
