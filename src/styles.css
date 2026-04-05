@@ -19,6 +19,7 @@
   --sorted: #227f4c;
   --border: rgba(20, 50, 63, 0.12);
   --shadow: 0 24px 60px rgba(20, 50, 63, 0.14);
+  --cell-min-width: 96px;
 }
 
 * {
@@ -525,6 +526,14 @@ h2 {
 }
 
 @media (max-width: 480px) {
+  .shell {
+    --cell-min-width: 60px;
+  }
+
+  .stage {
+    order: -1;
+  }
+
   .sidebar {
     padding: 14px;
   }

@@ -82,6 +82,18 @@ describe("compact layout at 375px viewport", () => {
     expect(screen.getByRole("button", { name: "再生" })).toBeInTheDocument();
   });
 
+  it("uses CSS variable for cell min-width to support compact grid", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Array/ }));
+
+    const cellsEl = container.querySelector(".cells") as HTMLElement;
+    expect(cellsEl).toBeTruthy();
+    expect(cellsEl.style.gridTemplateColumns).toContain("var(--cell-min-width");
+  });
+
   it("animates array operations correctly at 375px viewport", () => {
     vi.useFakeTimers();
 
