@@ -207,7 +207,7 @@ function App() {
       </aside>
 
       <main className="stage">
-        <section className="hero">
+        <section className="hero" data-sticky>
           <div>
             <p className="eyebrow">Now Visualizing</p>
             <h2>{selectedAlgorithm.name}</h2>

@@ -190,4 +190,15 @@ describe("App", () => {
     expect(screen.getByText("計算量 O(n)")).toBeInTheDocument();
     expect(screen.getByLabelText("index 5, empty")).toHaveClass("empty");
   });
+
+  it("sticky header keeps playback controls visible at top of stage", () => {
+    render(<App />);
+
+    const hero = document.querySelector(".hero");
+
+    expect(hero).toBeInTheDocument();
+    expect(hero).toHaveAttribute("data-sticky");
+    expect(hero).toContainElement(screen.getByRole("button", { name: "再生" }));
+    expect(hero).toContainElement(screen.getByRole("button", { name: "最初から" }));
+  });
 });
