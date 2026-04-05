@@ -88,4 +88,13 @@ describe("App", () => {
     expect(screen.getByText("計算量 O(n)")).toBeInTheDocument();
     expect(screen.getByLabelText("index 5, empty")).toHaveClass("empty");
   });
+
+  it("applies sticky positioning to the hero section", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    const hero = container.querySelector(".hero");
+    expect(hero).toHaveClass("hero--sticky");
+  });
 });
