@@ -523,3 +523,166 @@ h2 {
     font-size: 1.2rem;
   }
 }
+
+@media (max-width: 480px) {
+  .sidebar {
+    padding: 14px;
+  }
+
+  .stage {
+    padding: 14px 12px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .lead {
+    display: none;
+  }
+
+  .algorithm-list {
+    margin-top: 20px;
+    gap: 10px;
+  }
+
+  .algorithm-card {
+    padding: 12px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(20, 50, 63, 0.1);
+  }
+
+  .algorithm-card small {
+    display: none;
+  }
+
+  .hero {
+    padding: 14px;
+    border-radius: 18px;
+    gap: 14px;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+  }
+
+  .eyebrow {
+    margin-bottom: 6px;
+    font-size: 0.7rem;
+  }
+
+  .hero p:not(.eyebrow):not(.target-chip) {
+    display: none;
+  }
+
+  .target-chip {
+    margin-top: 8px;
+    padding: 5px 10px;
+    font-size: 0.82rem;
+  }
+
+  .controls {
+    gap: 8px;
+  }
+
+  .controls button,
+  .controls select {
+    min-height: 38px;
+    padding: 0 12px;
+    font-size: 0.85rem;
+  }
+
+  .controls label {
+    padding: 0 6px 0 10px;
+    font-size: 0.82rem;
+  }
+
+  .visualizer {
+    padding: 14px;
+    border-radius: 18px;
+    gap: 14px;
+  }
+
+  .bars {
+    min-height: 200px;
+    gap: 6px;
+  }
+
+  .bar-track {
+    height: 140px;
+    padding: 6px;
+    border-radius: 14px;
+  }
+
+  .bar-value {
+    font-size: 0.78rem;
+  }
+
+  .bar-index {
+    font-size: 0.7rem;
+  }
+
+  .search-cards {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 8px;
+  }
+
+  .search-card {
+    min-height: 80px;
+    padding: 10px 6px;
+    border-radius: 14px;
+    box-shadow: 0 8px 16px rgba(20, 50, 63, 0.06);
+  }
+
+  .search-value {
+    font-size: 1.3rem;
+  }
+
+  .search-index {
+    font-size: 0.7rem;
+  }
+
+  .cells {
+    gap: 8px;
+  }
+
+  .cell-card {
+    min-height: 80px;
+    padding: 10px 6px;
+    border-radius: 14px;
+    box-shadow: 0 8px 16px rgba(20, 50, 63, 0.06);
+  }
+
+  .cell-value {
+    font-size: 1.3rem;
+  }
+
+  .cell-index {
+    font-size: 0.7rem;
+  }
+
+  .cell-card.empty .cell-value {
+    font-size: 0.9rem;
+  }
+
+  .status-panel {
+    padding-top: 12px;
+  }
+
+  .status-label {
+    margin-bottom: 4px;
+    font-size: 0.75rem;
+  }
+
+  .status-tag,
+  .status-complexity {
+    margin-bottom: 6px;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+
+  .status-message {
+    font-size: 1rem;
+  }
+}
