@@ -208,39 +208,41 @@ function App() {
 
       <main className="stage">
         <section className="hero">
-          <div>
+          <div className="hero-title">
             <p className="eyebrow">Now Visualizing</p>
             <h2>{selectedAlgorithm.name}</h2>
             <p>{selectedAlgorithm.description}</p>
+          </div>
+
+          <div className="hero-controls-row">
+            <div className="controls">
+              <button type="button" onClick={() => setIsPlaying((current) => !current)}>
+                {isPlaying ? "一時停止" : "再生"}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setStepIndex(0);
+                  setIsPlaying(false);
+                }}
+              >
+                最初から
+              </button>
+              <label>
+                速度
+                <select
+                  value={intervalMs}
+                  onChange={(event) => setIntervalMs(Number(event.target.value))}
+                >
+                  <option value={1200}>ゆっくり</option>
+                  <option value={900}>標準</option>
+                  <option value={500}>速い</option>
+                </select>
+              </label>
+            </div>
             {displayTargetValue !== undefined ? (
               <p className="target-chip">探す値: {displayTargetValue}</p>
             ) : null}
-          </div>
-
-          <div className="controls">
-            <button type="button" onClick={() => setIsPlaying((current) => !current)}>
-              {isPlaying ? "一時停止" : "再生"}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setStepIndex(0);
-                setIsPlaying(false);
-              }}
-            >
-              最初から
-            </button>
-            <label>
-              速度
-              <select
-                value={intervalMs}
-                onChange={(event) => setIntervalMs(Number(event.target.value))}
-              >
-                <option value={1200}>ゆっくり</option>
-                <option value={900}>標準</option>
-                <option value={500}>速い</option>
-              </select>
-            </label>
           </div>
         </section>
 
