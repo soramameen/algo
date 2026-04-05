@@ -109,16 +109,14 @@ function App() {
 
       <main className="stage">
         <section className="hero">
-          <div>
+          <div className="hero-title">
             <p className="eyebrow">Now Visualizing</p>
             <h2>{selectedAlgorithm.name}</h2>
             <p>{selectedAlgorithm.description}</p>
-            {selectedAlgorithm.targetValue !== undefined ? (
-              <p className="target-chip">探す値: {selectedAlgorithm.targetValue}</p>
-            ) : null}
           </div>
 
-          <div className="controls">
+          <div className="hero-controls-row">
+            <div className="controls">
             <button type="button" onClick={() => setIsPlaying((current) => !current)}>
               {isPlaying ? "一時停止" : "再生"}
             </button>
@@ -142,6 +140,10 @@ function App() {
                 <option value={500}>速い</option>
               </select>
             </label>
+            </div>
+            {selectedAlgorithm.targetValue !== undefined ? (
+              <p className="target-chip">探す値: {selectedAlgorithm.targetValue}</p>
+            ) : null}
           </div>
         </section>
 

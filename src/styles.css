@@ -143,10 +143,30 @@ h2 {
 }
 
 .hero {
+  display: grid;
+  gap: 20px;
+}
+
+.hero-title {
+  display: grid;
+  gap: 4px;
+}
+
+.hero-controls-row {
   display: flex;
-  gap: 24px;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.hero-controls-row .controls {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.hero-controls-row .target-chip {
+  margin-top: 0;
+  white-space: nowrap;
 }
 
 .hero p {
@@ -465,11 +485,12 @@ h2 {
     border-bottom: 1px solid var(--border);
   }
 
-  .hero {
+  .hero-controls-row {
     flex-direction: column;
+    align-items: stretch;
   }
 
-  .controls {
+  .hero-controls-row .controls {
     justify-content: flex-start;
   }
 }

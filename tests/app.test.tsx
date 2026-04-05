@@ -89,3 +89,60 @@ describe("App", () => {
     expect(screen.getByLabelText("index 5, empty")).toHaveClass("empty");
   });
 });
+
+describe("Reordered layout (issue-27 plan 3)", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("places title section before controls row in the hero section", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+    const hero = container.querySelector(".hero")!;
+
+    const heroTitle = hero.querySelector(":scope > .hero-title");
+    const heroControlsRow = hero.querySelector(":scope > .hero-controls-row");
+
+    expect(heroTitle).not.toBeNull();
+    expect(heroControlsRow).not.toBeNull();
+
+    const titleIndex = Array.from(hero.children).indexOf(heroTitle!);
+    const controlsIndex = Array.from(hero.children).indexOf(heroControlsRow!);
+    expect(titleIndex).toBeLessThan(controlsIndex);
+  });
+
+  it("renders controls row with controls and target chip for search algorithms", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Linear Search/ }));
+
+    const heroControlsRow = container.querySelector(".hero-controls-row")!;
+    expect(heroControlsRow.querySelector(".controls")).not.toBeNull();
+    expect(heroControlsRow.querySelector(".target-chip")).not.toBeNull();
+  });
+
+  it("renders controls row without target chip for non-search algorithms", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    const heroControlsRow = container.querySelector(".hero-controls-row")!;
+    expect(heroControlsRow.querySelector(".controls")).not.toBeNull();
+    expect(heroControlsRow.querySelector(".target-chip")).toBeNull();
+  });
+
+  it("renders controls row with controls but no target chip for array algorithm", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Array/ }));
+
+    const heroControlsRow = container.querySelector(".hero-controls-row")!;
+    expect(heroControlsRow.querySelector(".controls")).not.toBeNull();
+    expect(heroControlsRow.querySelector(".target-chip")).toBeNull();
+  });
+});
