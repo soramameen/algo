@@ -49,7 +49,7 @@ input {
 
 .sidebar,
 .stage {
-  padding: 32px;
+  padding: 24px;
 }
 
 .sidebar {
@@ -85,26 +85,26 @@ h2 {
 }
 
 .lead {
-  margin: 20px 0 0;
+  margin: 12px 0 0;
   max-width: 26rem;
   color: var(--muted);
 }
 
 .algorithm-list {
   display: grid;
-  gap: 16px;
-  margin-top: 32px;
+  gap: 12px;
+  margin-top: 20px;
 }
 
 .algorithm-card {
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 16px;
   background: var(--paper);
   box-shadow: var(--shadow);
   color: var(--ink);
   display: grid;
-  gap: 8px;
-  padding: 18px;
+  gap: 6px;
+  padding: 14px;
   text-align: left;
   transition:
     transform 180ms ease,
@@ -130,22 +130,22 @@ h2 {
 
 .stage {
   display: grid;
-  gap: 24px;
+  gap: 16px;
 }
 
 .hero,
 .visualizer {
   border: 1px solid var(--border);
-  border-radius: 28px;
+  border-radius: 20px;
   background: var(--paper);
   box-shadow: var(--shadow);
-  padding: 28px;
+  padding: 18px;
   backdrop-filter: blur(18px);
 }
 
 .hero {
   display: flex;
-  gap: 24px;
+  gap: 16px;
   justify-content: space-between;
   align-items: flex-start;
 }
@@ -158,20 +158,20 @@ h2 {
 
 .target-chip {
   display: inline-flex;
-  margin-top: 16px;
+  margin-top: 10px;
   border: 1px solid rgba(217, 108, 35, 0.24);
   border-radius: 999px;
   background: rgba(217, 108, 35, 0.08);
   color: var(--accent);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  padding: 8px 14px;
+  padding: 6px 12px;
 }
 
 .controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
   justify-content: flex-end;
 }
 
@@ -196,17 +196,17 @@ h2 {
 
 .visualizer {
   display: grid;
-  gap: 24px;
+  gap: 16px;
 }
 
 .editor-panel {
   display: grid;
-  gap: 20px;
+  gap: 16px;
   border: 1px solid var(--border);
-  border-radius: 28px;
+  border-radius: 20px;
   background: var(--paper);
   box-shadow: var(--shadow);
-  padding: 28px;
+  padding: 18px;
 }
 
 .input-editor {
@@ -222,14 +222,14 @@ h2 {
 
 .input-grid {
   display: grid;
-  gap: 12px;
-  margin-top: 16px;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 .input-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 12px;
+  gap: 8px;
   align-items: end;
 }
 
@@ -256,7 +256,7 @@ h2 {
 .editor-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
 }
 
 .input-row-button {
@@ -293,21 +293,21 @@ h2 {
   display: grid;
   grid-template-columns: repeat(8, minmax(0, 1fr));
   align-items: end;
-  gap: 18px;
-  min-height: 420px;
+  gap: 12px;
+  min-height: 360px;
 }
 
 .search-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 16px;
-  min-height: 320px;
+  grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+  gap: 12px;
+  min-height: 280px;
 }
 
 .cells {
   display: grid;
-  gap: 14px;
-  min-height: 180px;
+  gap: 10px;
+  min-height: 160px;
   align-items: stretch;
   width: 100%;
   overflow-x: auto;
@@ -321,7 +321,7 @@ h2 {
   flex-direction: column;
   justify-content: end;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   min-height: 100%;
 }
 
@@ -329,11 +329,11 @@ h2 {
   display: grid;
   align-content: center;
   justify-items: center;
-  gap: 12px;
-  min-height: 180px;
-  padding: 20px 16px;
+  gap: 10px;
+  min-height: 160px;
+  padding: 16px 14px;
   border: 1px solid rgba(20, 50, 63, 0.12);
-  border-radius: 24px;
+  border-radius: 20px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(233, 223, 200, 0.34) 100%),
     linear-gradient(135deg, rgba(240, 196, 125, 0.26) 0%, rgba(255, 255, 255, 0) 100%);
@@ -377,11 +377,11 @@ h2 {
   display: grid;
   align-content: center;
   justify-items: center;
-  gap: 10px;
-  min-height: 150px;
-  padding: 18px 14px;
+  gap: 8px;
+  min-height: 130px;
+  padding: 14px 12px;
   border: 1px solid rgba(20, 50, 63, 0.12);
-  border-radius: 22px;
+  border-radius: 18px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0%, rgba(233, 223, 200, 0.34) 100%),
     linear-gradient(135deg, rgba(24, 121, 114, 0.12) 0%, rgba(255, 255, 255, 0) 100%);
@@ -452,9 +452,9 @@ h2 {
   display: flex;
   align-items: end;
   width: 100%;
-  height: 300px;
-  padding: 10px;
-  border-radius: 24px;
+  height: 260px;
+  padding: 8px;
+  border-radius: 20px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(233, 223, 200, 0.28) 100%),
     repeating-linear-gradient(
@@ -503,7 +503,7 @@ h2 {
 
 .status-panel {
   border-top: 1px solid var(--border);
-  padding-top: 20px;
+  padding-top: 16px;
 }
 
 .status-label {
@@ -543,7 +543,7 @@ h2 {
 
 .status-message {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
 }
 
 @media (max-width: 960px) {
@@ -568,49 +568,99 @@ h2 {
 @media (max-width: 720px) {
   .sidebar,
   .stage {
-    padding: 20px;
+    padding: 16px;
   }
 
   .hero,
   .visualizer {
-    padding: 20px;
+    padding: 14px;
   }
 
   .bars {
-    gap: 10px;
-    min-height: 320px;
+    gap: 8px;
+    min-height: 280px;
   }
 
   .search-cards {
-    gap: 12px;
+    gap: 10px;
     min-height: 0;
-    grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
   }
 
   .cells {
-    gap: 10px;
+    gap: 8px;
   }
 
   .bar-track {
-    height: 220px;
-    padding: 8px;
+    height: 200px;
+    padding: 6px;
   }
 
   .search-card {
-    min-height: 140px;
-    padding: 16px 12px;
+    min-height: 120px;
+    padding: 12px 10px;
   }
 
   .bar-value {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .cell-card {
-    min-height: 120px;
-    padding: 14px 10px;
+    min-height: 110px;
+    padding: 12px 8px;
   }
 
   .status-message {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar,
+  .stage {
+    padding: 12px;
+  }
+
+  .hero,
+  .visualizer {
+    padding: 12px;
+  }
+
+  .algorithm-card {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .bars {
+    min-height: 220px;
+  }
+
+  .bar-track {
+    height: 160px;
+  }
+
+  .search-cards {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+
+  .search-card {
+    min-height: 100px;
+    padding: 10px 8px;
+  }
+
+  .cell-card {
+    min-height: 90px;
+    padding: 10px 6px;
+  }
+
+  .status-message {
+    font-size: 1rem;
   }
 }
