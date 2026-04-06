@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { algorithms } from "./data/algorithms";
 import type { AlgorithmSpec, StepAction } from "./types";
+import RobotPathfindingVisualizer from "./components/RobotPathfindingVisualizer";
 
 const DEFAULT_INTERVAL_MS = 900;
 
@@ -100,14 +101,14 @@ function validateInputs(
 }
 
 function App() {
-  const [selectedId, setSelectedId] = useState<AlgorithmSpec["id"]>("bubble-sort");
+  const [selectedContentId, setSelectedContentId] = useState<AlgorithmSpec["id"] | "robot-pathfinding">("bubble-sort");
   const [stepIndex, setStepIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [intervalMs, setIntervalMs] = useState(DEFAULT_INTERVAL_MS);
 
   const selectedAlgorithm = useMemo(
-    () => algorithms.find((algorithm) => algorithm.id === selectedId) ?? algorithms[0],
-    [selectedId]
+    () => algorithms.find((algorithm) => algorithm.id === selectedContentId) ?? algorithms[0],
+    [selectedContentId]
   );
 
   const [draftValues, setDraftValues] = useState(() => createDraftValues(selectedAlgorithm.initialValues));
@@ -129,10 +130,10 @@ function App() {
     setErrorMessage(null);
     setStepIndex(0);
     setIsPlaying(false);
-  }, [selectedAlgorithm]);
+  }, [selectedContentId]);
 
   useEffect(() => {
-    if (!isPlaying) {
+    if (!isPlaying || selectedContentId === "robot-pathfinding") {
       return undefined;
     }
 
@@ -196,17 +197,29 @@ function App() {
             <button
               key={algorithm.id}
               type="button"
-              className={algorithm.id === selectedAlgorithm.id ? "algorithm-card active" : "algorithm-card"}
-              onClick={() => setSelectedId(algorithm.id)}
+              className={algorithm.id === selectedContentId ? "algorithm-card active" : "algorithm-card"}
+              onClick={() => setSelectedContentId(algorithm.id)}
             >
               <span>{algorithm.name}</span>
               <small>{algorithm.summary}</small>
             </button>
           ))}
+          <button
+            type="button"
+            className={selectedContentId === "robot-pathfinding" ? "algorithm-card active" : "algorithm-card"}
+            onClick={() => setSelectedContentId("robot-pathfinding")}
+          >
+            <span>Robot Pathfinding</span>
+            <small>BFSでグリッド上の最短経路を探索します。</small>
+          </button>
         </nav>
       </aside>
 
       <main className="stage">
+        {selectedContentId === "robot-pathfinding" ? (
+          <RobotPathfindingVisualizer />
+        ) : (
+          <>
         <section className="hero">
           <div>
             <p className="eyebrow">Now Visualizing</p>
@@ -400,6 +413,8 @@ function App() {
             <p className="status-message">{step.message}</p>
           </div>
         </section>
+          </>
+        )}
       </main>
     </div>
   );

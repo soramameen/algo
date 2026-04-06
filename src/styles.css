@@ -614,3 +614,212 @@ h2 {
     font-size: 1.2rem;
   }
 }
+
+/* Robot Pathfinding Visualizer */
+
+.robot-pathfinding-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.robot-pathfinding-header {
+  margin-bottom: 20px;
+}
+
+.robot-pathfinding-title {
+  margin: 0 0 8px;
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+}
+
+.robot-pathfinding-description {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.robot-pathfinding-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.robot-pathfinding-controls button,
+.robot-pathfinding-controls select {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: #173c48;
+  color: #f8f5ef;
+  min-height: 40px;
+  padding: 0 18px;
+  cursor: pointer;
+}
+
+.robot-pathfinding-controls label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border-radius: 999px;
+  background: rgba(23, 60, 72, 0.08);
+  padding: 0 8px 0 14px;
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.robot-pathfinding-status-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.robot-pathfinding-phase {
+  display: inline-flex;
+  border-radius: 999px;
+  background: rgba(24, 121, 114, 0.1);
+  color: var(--active);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 6px 12px;
+  text-transform: uppercase;
+}
+
+.robot-pathfinding-message {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.robot-pathfinding-step-counter {
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.robot-pathfinding-grid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 3px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.robot-pathfinding-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: clamp(0.7rem, 1.5vw, 0.95rem);
+  font-weight: 700;
+  transition: background 180ms ease, box-shadow 180ms ease;
+  position: relative;
+}
+
+.robot-pathfinding-cell-empty {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.robot-pathfinding-cell-wall {
+  background: #2d3436;
+}
+
+.robot-pathfinding-cell-start {
+  background: #b8edc6;
+  border: 1px solid rgba(34, 127, 76, 0.3);
+}
+
+.robot-pathfinding-cell-goal {
+  background: #ffd6a5;
+  border: 1px solid rgba(217, 108, 35, 0.3);
+}
+
+.robot-pathfinding-cell-visited {
+  background: #d5e8ed;
+}
+
+.robot-pathfinding-cell-frontier {
+  background: #a3d5e0;
+  border: 1px solid rgba(24, 121, 114, 0.3);
+}
+
+.robot-pathfinding-cell-current {
+  background: var(--active);
+  box-shadow: 0 0 8px rgba(24, 121, 114, 0.4);
+}
+
+.robot-pathfinding-cell-path {
+  background: var(--accent-soft);
+  border: 1px solid rgba(217, 108, 35, 0.3);
+}
+
+.robot-pathfinding-cell-robot {
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(217, 108, 35, 0.4);
+}
+
+.robot-pathfinding-marker {
+  position: relative;
+  z-index: 1;
+  font-weight: 800;
+  color: var(--ink);
+  pointer-events: none;
+}
+
+.robot-pathfinding-cell-wall .robot-pathfinding-marker,
+.robot-pathfinding-cell-current .robot-pathfinding-marker,
+.robot-pathfinding-cell-robot .robot-pathfinding-marker {
+  color: #f8f5ef;
+}
+
+.robot-pathfinding-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.robot-pathfinding-legend-item {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.robot-pathfinding-legend-swatch {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 720px) {
+  .robot-pathfinding-container {
+    padding: 20px;
+  }
+
+  .robot-pathfinding-grid {
+    gap: 2px;
+  }
+
+  .robot-pathfinding-cell {
+    font-size: 0.65rem;
+  }
+}
