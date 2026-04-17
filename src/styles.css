@@ -139,15 +139,35 @@ h2 {
   border-radius: 28px;
   background: var(--paper);
   box-shadow: var(--shadow);
-  padding: 28px;
+  padding: 20px;
   backdrop-filter: blur(18px);
 }
 
 .hero {
+  display: grid;
+  gap: 12px;
+}
+
+.hero-title {
+  display: grid;
+  gap: 2px;
+}
+
+.hero-controls-row {
   display: flex;
-  gap: 24px;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.hero-controls-row .controls {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.hero-controls-row .target-chip {
+  margin-top: 0;
+  white-space: nowrap;
 }
 
 .hero p {
@@ -556,11 +576,12 @@ h2 {
     border-bottom: 1px solid var(--border);
   }
 
-  .hero {
+  .hero-controls-row {
     flex-direction: column;
+    align-items: stretch;
   }
 
-  .controls {
+  .hero-controls-row .controls {
     justify-content: flex-start;
   }
 }
@@ -573,7 +594,7 @@ h2 {
 
   .hero,
   .visualizer {
-    padding: 20px;
+    padding: 14px;
   }
 
   .bars {

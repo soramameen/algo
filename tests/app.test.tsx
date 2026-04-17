@@ -191,3 +191,97 @@ describe("App", () => {
     expect(screen.getByLabelText("index 5, empty")).toHaveClass("empty");
   });
 });
+
+describe("Reordered layout (issue-27 plan 3, v2-c)", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("places hero-title section before hero-controls-row in the hero section", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+    const hero = container.querySelector(".hero")!;
+
+    const heroTitle = hero.querySelector(":scope > .hero-title");
+    const heroControlsRow = hero.querySelector(":scope > .hero-controls-row");
+
+    expect(heroTitle).not.toBeNull();
+    expect(heroControlsRow).not.toBeNull();
+
+    const titleIndex = Array.from(hero.children).indexOf(heroTitle!);
+    const controlsIndex = Array.from(hero.children).indexOf(heroControlsRow!);
+    expect(titleIndex).toBeLessThan(controlsIndex);
+  });
+
+  it("renders controls row with controls and target chip for linear search", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Linear Search/ }));
+
+    const heroControlsRow = container.querySelector(".hero-controls-row")!;
+    expect(heroControlsRow.querySelector(".controls")).not.toBeNull();
+    expect(heroControlsRow.querySelector(".target-chip")).not.toBeNull();
+    expect(heroControlsRow.querySelector(".target-chip")!.textContent).toBe("探す値: 27");
+  });
+
+  it("renders controls row without target chip for bubble sort", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    const heroControlsRow = container.querySelector(".hero-controls-row")!;
+    expect(heroControlsRow.querySelector(".controls")).not.toBeNull();
+    expect(heroControlsRow.querySelector(".target-chip")).toBeNull();
+  });
+
+  it("renders controls row without target chip for array algorithm", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Array/ }));
+
+    const heroControlsRow = container.querySelector(".hero-controls-row")!;
+    expect(heroControlsRow.querySelector(".controls")).not.toBeNull();
+    expect(heroControlsRow.querySelector(".target-chip")).toBeNull();
+  });
+
+  it("keeps the editor panel with input editing UI for bubble sort", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    expect(screen.getByRole("group", { name: "入力配列" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Apply" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "サンプルに戻す" })).toBeInTheDocument();
+    expect(container.querySelector(".editor-panel")).not.toBeNull();
+  });
+
+  it("keeps the editor panel with target input for linear search", () => {
+    vi.useFakeTimers();
+
+    render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Linear Search/ }));
+
+    expect(screen.getByRole("group", { name: "入力配列" })).toBeInTheDocument();
+    expect(screen.getByRole("spinbutton", { name: "探索値" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Apply" })).toBeInTheDocument();
+  });
+
+  it("updates target chip when linear search inputs are applied", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Linear Search/ }));
+    fireEvent.change(screen.getByRole("spinbutton", { name: "探索値" }), { target: { value: "3" } });
+    fireEvent.click(screen.getByRole("button", { name: "Apply" }));
+
+    const heroControlsRow = container.querySelector(".hero-controls-row")!;
+    expect(heroControlsRow.querySelector(".target-chip")!.textContent).toBe("探す値: 3");
+  });
+});
