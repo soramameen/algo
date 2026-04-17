@@ -3,7 +3,7 @@ import { algorithms } from "./data/algorithms";
 import type { AlgorithmSpec, StepAction } from "./types";
 import RobotPathfindingVisualizer from "./components/RobotPathfindingVisualizer";
 
-const DEFAULT_INTERVAL_MS = 900;
+const DEFAULT_INTERVAL_MS = 1200;
 
 type AppliedInputs = {
   values: number[];
@@ -249,9 +249,9 @@ function App() {
                 value={intervalMs}
                 onChange={(event) => setIntervalMs(Number(event.target.value))}
               >
-                <option value={1200}>ゆっくり</option>
-                <option value={900}>標準</option>
-                <option value={500}>速い</option>
+                <option value={1500}>ゆっくり</option>
+                <option value={1200}>標準</option>
+                <option value={900}>速い</option>
               </select>
             </label>
           </div>
