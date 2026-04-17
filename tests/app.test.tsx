@@ -130,6 +130,20 @@ describe("App", () => {
     expect(screen.queryByRole("group", { name: "入力配列" })).not.toBeInTheDocument();
   });
 
+  it("uses compact cell column width for mobile-friendly layout", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Array/ }));
+
+    const cellsGrid = container.querySelector(".cells");
+    expect(cellsGrid).toBeInTheDocument();
+    expect(cellsGrid).toHaveStyle({
+      gridTemplateColumns: "repeat(5, minmax(72px, 1fr))"
+    });
+  });
+
   it("switches to array cells and shows the access complexity", () => {
     vi.useFakeTimers();
 
@@ -140,7 +154,7 @@ describe("App", () => {
     expect(screen.getByText("計算量 O(1)")).toBeInTheDocument();
     expect(container.querySelectorAll(".cell-card")).toHaveLength(5);
     expect(container.querySelector(".cells")).toHaveStyle({
-      gridTemplateColumns: "repeat(5, minmax(96px, 1fr))"
+      gridTemplateColumns: "repeat(5, minmax(72px, 1fr))"
     });
     expect(screen.getByLabelText("index 2, value 18")).toBeInTheDocument();
   });
