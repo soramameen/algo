@@ -1,0 +1,77 @@
+<body>
+  <div#root>
+    <div.shell>
+      <aside.sidebar>
+        <p.eyebrow>
+          "Algorithm Visualizer"
+        <h1>
+          "アルゴリズムを動きで理解する"
+        <p.lead>
+          "アルゴリズムごとに合う表現で、状態変化を視覚的に追えるようにします。"
+        <nav.algorithm-list>
+          <button.algorithm-card.active>
+            <span>
+              "Bubble Sort"
+            <small>
+              "隣り合う要素を比較して、大きい値を右へ押し出していくソートです。"
+          <button.algorithm-card>
+            <span>
+              "Linear Search"
+            <small>
+              "左から順にカードを確認して、目的の要素を見つける探索です。"
+          <button.algorithm-card>
+            <span>
+              "Array"
+            <small>
+              "配列の参照・挿入・削除の流れを、セル列で最小限に確認します。"
+      <main.stage>
+        <section.hero>
+          <div>
+            <p.eyebrow>
+              "Now Visualizing"
+            <h2>
+              "Bubble Sort"
+            <p>
+              "各パスで最大値が末尾へ移動していく様子を、棒グラフとステータスメッセージで追跡します。"
+          <div.controls>
+            <button>
+              "再生"
+            <button>
+              "最初から"
+            <label>
+              "速度"
+        <section.editor-panel>
+          <fieldset.input-editor>
+            <legend>
+              "入力配列"
+            <div.input-grid>
+          <div.editor-actions>
+            <button.input-row-button>
+              "要素を追加"
+            <button.input-row-button.primary>
+              "Apply"
+            <button.input-row-button.secondary>
+              "サンプルに戻す"
+        <section.visualizer>
+          <div.bars>
+            <article.bar-card>
+            <article.bar-card>
+            <article.bar-card>
+            <article.bar-card>
+            <article.bar-card>
+            <article.bar-card>
+            <article.bar-card>
+            <article.bar-card>
+          <div.status-panel>
+            <p.status-label>
+              "Step"
+              "1"
+              "/"
+              "52"
+            <p.status-tag>
+              "Compare"
+            <p.status-complexity>
+              "計算量"
+              "O(n^2)"
+            <p.status-message>
+              "初期状態です。左から順に比較を始めます。"
