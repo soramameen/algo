@@ -185,6 +185,11 @@ h2 {
   padding: 0 18px;
 }
 
+.controls button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .controls label {
   display: flex;
   gap: 10px;
@@ -192,6 +197,10 @@ h2 {
   border-radius: 999px;
   background: rgba(23, 60, 72, 0.08);
   padding: 0 8px 0 16px;
+}
+
+.seek-control input {
+  width: 160px;
 }
 
 .visualizer {
